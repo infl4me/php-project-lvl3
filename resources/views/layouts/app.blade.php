@@ -22,10 +22,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link {{Route::is('/') ? 'active' : ''}}" href="/">Главная</a>
+                        <a class="nav-link {{ Route::is('/') ? 'active' : '' }}" href="/">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{Route::is('urls.index') ? 'active' : ''}}" href="/urls">Сайты</a>
+                        <a class="nav-link {{ Route::is('urls.index') ? 'active' : '' }}" href="/urls">Сайты</a>
                     </li>
                 </ul>
             </div>
@@ -33,6 +33,13 @@
     </header>
 
     <main class="flex-grow-1">
+        @if (Session::has('ntfn'))
+            <div class="alert alert-{{ Session::get('ntfn')['status'] }} alert-dismissible fade show" role="alert">
+                {{ Session::get('ntfn')['message'] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         @yield('main')
     </main>
 

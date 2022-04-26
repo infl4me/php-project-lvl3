@@ -34,7 +34,8 @@ class UrlController extends Controller
         if ($validator->fails()) {
             $request->session()->flash('ntfn', ['status' => 'danger', 'message' => 'Некорректный URL']);
 
-            return redirect('/')
+            return redirect()
+                ->route('/')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -45,19 +46,19 @@ class UrlController extends Controller
             'url' => 'required|max:255|url',
         ]);
 
-        $urls = DB::select("
+        $existingUrls = DB::select("
             SELECT * FROM urls
             WHERE name = '{$url}'
         ");
-        if (collect($urls)->isNotEmpty()) {
-            return redirect('/');
+        if (collect($existingUrls)->isNotEmpty()) {
+            $request->session()->flash('ntfn', ['status' => 'info', 'message' => 'Страница уже существует']);
+            return redirect()->route('urls.show', [$existingUrls[0]->id]);
         }
 
         $dateNow = Carbon::now();
         DB::insert("INSERT INTO urls VALUES (default, '{$url}', '{$dateNow}')");
 
         $request->session()->flash('ntfn', ['status' => 'success', 'message' => 'Страница успешно добавлена']);
-
         return redirect()->route('/');
     }
 }

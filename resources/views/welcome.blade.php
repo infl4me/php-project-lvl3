@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
 @section('main')
-    @if (Session::has('ntfn'))
-        <div class="alert alert-{{ Session::get('ntfn')['status'] }} alert-dismissible fade show" role="alert">
-            {{ Session::get('ntfn')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
     <div class="container mt-3">
         <div class="row">
             <div class="col-12 col-md-10 col-lg-8 mx-auto border rounded-3 bg-light p-5">
