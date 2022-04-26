@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $items = DB::select("SELECT * FROM test");
     return view('welcome', compact('items'));
-});
+})->name('/');
+
+Route::get('urls', [UrlController::class, 'index'])
+    ->name('urls.index');
+Route::post('urls', [UrlController::class, 'store'])
+    ->name('urls.store');

@@ -48,14 +48,9 @@ return [
      */
 
     'channels' => [
-        'stack' => [
-            'driver' => 'stack',
-            'channels' => ['single'],
-        ],
-        'single' => [
-            'driver' => 'errorlog',
-            'level' => 'debug',
-        ],
+        'driver' => 'stack',
+        'name' => 'channel-name',
+        'channels' => ['single', 'slack'],
 
         'daily' => [
             'driver' => 'daily',
