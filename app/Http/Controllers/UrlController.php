@@ -57,8 +57,9 @@ class UrlController extends Controller
 
         $dateNow = Carbon::now();
         DB::insert("INSERT INTO urls VALUES (default, '{$url}', '{$dateNow}')");
+        [$newUrl] = DB::select("SELECT * FROM urls ORDER BY id DESC LIMIT 1");
 
         $request->session()->flash('ntfn', ['status' => 'success', 'message' => 'Страница успешно добавлена']);
-        return redirect()->route('/');
+        return redirect()->route('urls.show', [$newUrl->id]);
     }
 }
