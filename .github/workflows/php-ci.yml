@@ -24,6 +24,6 @@ jobs:
           # Specify the PHP version
           php-version: '7.4'
       - name: Run setup
-        run: make setup
+        run: composer install
       - name: Run linter
         run: make lint
