@@ -16,25 +16,47 @@ class UrlController extends Controller
         return view('url.index', compact('urls'));
     }
 
+    public function show($id)
+    {
+        [$url] = DB::select("
+            SELECT * FROM urls
+            WHERE id = '{$id}'
+        ");
+
+        return view('url.view', compact('url'));
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|url|unique:urls',
+            'name' => 'required|max:255|url',
         ]);
-
         if ($validator->fails()) {
-            $request->session()->flash('ntfn', ['status' => 'danger', 'message' => 'There is validation error']);
+            $request->session()->flash('ntfn', ['status' => 'danger', 'message' => 'Некорректный URL']);
 
             return redirect('/')
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        $url = $request->input('name');
+        ['host' => $host, 'scheme' => $scheme] = parse_url($request->input('name'));
+        $url = $scheme . '://' . $host;
+        $validator = Validator::make(['url' => $url], [
+            'url' => 'required|max:255|url',
+        ]);
+
+        $urls = DB::select("
+            SELECT * FROM urls
+            WHERE name = '{$url}'
+        ");
+        if (collect($urls)->isNotEmpty()) {
+            return redirect('/');
+        }
+
         $dateNow = Carbon::now();
         DB::insert("INSERT INTO urls VALUES (default, '{$url}', '{$dateNow}')");
 
-        $request->session()->flash('ntfn', ['status' => 'success', 'message' => 'Url has been added!']);
+        $request->session()->flash('ntfn', ['status' => 'success', 'message' => 'Страница успешно добавлена']);
 
         return redirect()->route('/');
     }

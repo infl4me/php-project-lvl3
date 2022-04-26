@@ -15,7 +15,12 @@
                 <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
 
                 {{ Form::open(['route' => 'urls.store', 'method' => 'POST', 'class' => 'd-flex justify-content-center']) }}
-                {{ Form::text('name', '', ['placeholder' => 'https://www.example.com','class' => 'form-control form-control-lg','required' => true]) }}
+                {{ Form::text('name', '', [
+                    'placeholder' => 'https://www.example.com',
+                    'class' => 'form-control form-control-lg',
+                    'required' => true,
+                    'autocomplete' => 'off',
+                ]) }}
                 {{ Form::submit('Проверить', ['class' => 'btn btn-primary btn-lg ms-3 px-5 text-uppercase mx-3']) }}
                 {{ Form::close() }}
             </div>
