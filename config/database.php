@@ -2,17 +2,19 @@
 
 use Illuminate\Support\Str;
 
-function pickOption($key, $value)
-{
-    $dburl = getenv('DATABASE_URL');
+if (!function_exists('pickOption')) {
+    function pickOption($key, $value)
+    {
+        $dburl = getenv('DATABASE_URL');
 
-    if (!$dburl) {
-        return $value;
+        if (!$dburl) {
+            return $value;
+        }
+
+        $dbopts = parse_url($dburl);
+
+        return $dbopts[$key];
     }
-
-    $dbopts = parse_url($dburl);
-
-    return $dbopts[$key];
 }
 
 return [
@@ -102,6 +104,11 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+        ],
+        'sqlite_testing' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
         ],
 
     ],
