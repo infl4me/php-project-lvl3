@@ -14,7 +14,7 @@ class UrlCheckFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'status_code' => 200,
         ];
     }
 }

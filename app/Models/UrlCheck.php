@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UrlCheck extends Model
 {
     use HasFactory;
+    protected $fillable = ['status_code'];
 
     public function url()
     {

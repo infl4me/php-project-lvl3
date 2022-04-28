@@ -4,25 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Url;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UrlController extends Controller
 {
     public function index()
     {
-        $urls = DB::select('SELECT * FROM urls');
+        $urls = Url::with('urlChecks')->get()->map(function ($url) {
+            $lastCheck = $url->urlChecks->last();
+            if (!$lastCheck) {
+                return $url;
+            }
+
+            $url['status_code'] = $lastCheck->status_code;
+            $url['last_checked'] = $lastCheck->created_at;
+            return $url;
+        });
 
         return view('url.index', compact('urls'));
     }
 
     public function show($id)
     {
-        [$url] = DB::select("
-            SELECT * FROM urls
-            WHERE id = '{$id}'
-        ");
-        $urlChecks = DB::select('SELECT * FROM url_checks');
+        $url = Url::find($id);
+        $urlChecks = $url->urlChecks;
 
         return view('url.view', compact('url', 'urlChecks'));
     }
@@ -47,21 +52,17 @@ class UrlController extends Controller
             'url' => 'required|max:255|url',
         ]);
 
-        $existingUrls = DB::select("
-            SELECT * FROM urls
-            WHERE name = '{$url}'
-        ");
+        $existingUrls = Url::where('name', $url)->get();
+
         if (collect($existingUrls)->isNotEmpty()) {
             $request->session()->flash('ntfn', ['status' => 'info', 'message' => 'Страница уже существует']);
             return redirect()->route('urls.show', [$existingUrls[0]->id]);
         }
 
-        // DB::insert("INSERT INTO urls VALUES (default, '{$url}', '{$dateNow}')");
-        Url::make(['name' => $url])->save();
-
-        [$newUrl] = DB::select("SELECT * FROM urls ORDER BY id DESC LIMIT 1");
+        $newUrl = Url::make(['name' => $url]);
+        $newUrl->save();
 
         $request->session()->flash('ntfn', ['status' => 'success', 'message' => 'Страница успешно добавлена']);
-        return redirect()->route('urls.show', [$newUrl->id]);
+        return redirect()->route('urls.show', $newUrl);
     }
 }

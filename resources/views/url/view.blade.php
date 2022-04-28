@@ -43,7 +43,7 @@
                             @foreach ($urlChecks as $urlCheck)
                                 <tr>
                                     <td>{{ $urlCheck->id }}</td>
-                                    <td>?</td>
+                                    <td>{{ $urlCheck->status_code }}</td>
                                     <td>?</td>
                                     <td>?</td>
                                     <td>?</td>
