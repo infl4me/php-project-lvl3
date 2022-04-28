@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -23,8 +22,9 @@ class UrlController extends Controller
             SELECT * FROM urls
             WHERE id = '{$id}'
         ");
+        $urlChecks = DB::select('SELECT * FROM url_checks');
 
-        return view('url.view', compact('url'));
+        return view('url.view', compact('url', 'urlChecks'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,6 @@ class UrlController extends Controller
             return redirect()->route('urls.show', [$existingUrls[0]->id]);
         }
 
-        $dateNow = Carbon::now();
         // DB::insert("INSERT INTO urls VALUES (default, '{$url}', '{$dateNow}')");
         Url::make(['name' => $url])->save();
 

@@ -23,6 +23,36 @@
                         </tbody>
                     </table>
                 </div>
+
+                <h2 class="h2 mt-5 mb-3">Проверки</h2>
+                {{ Form::open(['url' => route('url_checks.store', $url->id), 'method' => 'POST', 'class' => 'd-flex mb-3']) }}
+                {{ Form::submit('Запустить проверку', ['class' => 'btn btn-primary']) }}
+                {{ Form::close() }}
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-nowrap">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Код ответа</th>
+                                <th>h1</th>
+                                <th>title</th>
+                                <th>description</th>
+                                <th>Дата Создания</th>
+                            </tr>
+                            @foreach ($urlChecks as $urlCheck)
+                                <tr>
+                                    <td>{{ $urlCheck->id }}</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>?</td>
+                                    <td>{{ $urlCheck->created_at }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

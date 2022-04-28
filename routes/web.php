@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UrlCheckController;
 use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,6 @@ Route::get('urls/{id}', [UrlController::class, 'show'])
     ->name('urls.show');
 Route::post('urls', [UrlController::class, 'store'])
     ->name('urls.store');
+
+Route::post('urls/{id}/checks', [UrlCheckController::class, 'store'])
+    ->name('url_checks.store');
