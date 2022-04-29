@@ -30,7 +30,7 @@ class UrlTest extends TestCase
     public function testStore()
     {
         $data = Url::factory()->make()->only('name');
-        $response = $this->post(route('urls.store'), $data);
+        $response = $this->post(route('urls.store'), ['url' => ['name' => $data['name']]]);
         $url = Url::latest('id')->first();
         $response->assertRedirect(route('urls.show', $url));
         $response->assertSessionHasNoErrors();

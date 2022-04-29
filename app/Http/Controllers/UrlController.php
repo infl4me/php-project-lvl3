@@ -35,9 +35,9 @@ class UrlController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|url',
+            'url.name' => 'max:255|url',
         ]);
-        if ($validator->fails()) {
+        if (!$request->input('url.name') || $validator->fails()) {
             $request->session()->flash('ntfn', ['status' => 'danger', 'message' => 'Некорректный URL']);
 
             return redirect()
@@ -45,12 +45,8 @@ class UrlController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
-        ['host' => $host, 'scheme' => $scheme] = parse_url($request->input('name'));
+        ['host' => $host, 'scheme' => $scheme] = parse_url($request->input('url.name'));
         $url = $scheme . '://' . $host;
-        $validator = Validator::make(['url' => $url], [
-            'url' => 'required|max:255|url',
-        ]);
 
         $existingUrls = Url::where('name', $url)->get();
 

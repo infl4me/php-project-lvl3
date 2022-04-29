@@ -8,7 +8,7 @@
                 <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
 
                 {{ Form::open(['route' => 'urls.store', 'method' => 'POST', 'class' => 'd-flex justify-content-center']) }}
-                {{ Form::text('name', '', [
+                {{ Form::text('url[name]', '', [
                     'placeholder' => 'https://www.example.com',
                     'class' => 'form-control form-control-lg',
                     'required' => true,
