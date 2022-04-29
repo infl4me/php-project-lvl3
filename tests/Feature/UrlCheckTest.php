@@ -35,11 +35,32 @@ class UrlCheckTest extends TestCase
         $url = Url::first();
         $data = UrlCheck::factory()->for($url)->make()->toArray();
 
-        Http::fake();
+        $html = file_get_contents(__DIR__ . '/../fixtures/laravel.html');
+        Http::fake([
+            '*' => Http::response($html, 200, ['Headers']),
+        ]);
         $response = $this->post(route('url_checks.store', $url), $data);
         $response->assertRedirect(route('urls.show', $url));
         $response->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas('url_checks', $data);
+        $this->assertDatabaseHas('url_checks', [
+            'h1' => 'The PHP Framework for Web Artisans',
+            'title' => 'Laravel - The PHP Framework For Web Artisans',
+            'description' => 'Laravel is a PHP web application framework with expressive, elegant syntax. We’ve already laid the foundation — freeing you to create without sweating the small things.',
+        ]);
+    }
+
+    public function testStoreEmpty()
+    {
+        $url = Url::first();
+        $data = UrlCheck::factory()->for($url)->make()->toArray();
+
+        $html = file_get_contents(__DIR__ . '/../fixtures/empty.html');
+        Http::fake([
+            '*' => Http::response($html, 200, ['Headers']),
+        ]);
+        $response = $this->post(route('url_checks.store', $url), $data);
+        $response->assertRedirect(route('urls.show', $url));
+        $response->assertSessionHasNoErrors();
     }
 }
