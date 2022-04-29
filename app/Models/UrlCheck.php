@@ -9,7 +9,7 @@ class UrlCheck extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status_code'];
+    protected $fillable = ['status_code', 'h1', 'title', 'description'];
 
     public function url()
     {

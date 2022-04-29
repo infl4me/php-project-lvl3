@@ -30,7 +30,7 @@
                 {{ Form::close() }}
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover text-nowrap">
+                    <table class="table table-bordered table-hover">
                         <tbody>
                             <tr>
                                 <th>ID</th>
@@ -44,9 +44,9 @@
                                 <tr>
                                     <td>{{ $urlCheck->id }}</td>
                                     <td>{{ $urlCheck->status_code }}</td>
-                                    <td>?</td>
-                                    <td>?</td>
-                                    <td>?</td>
+                                    <td>{{ $urlCheck->h1 }}</td>
+                                    <td>{{ $urlCheck->title }}</td>
+                                    <td>{{ $urlCheck->description }}</td>
                                     <td>{{ $urlCheck->created_at }}</td>
                                 </tr>
                             @endforeach

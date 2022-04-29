@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateTestTable extends Migration
@@ -14,10 +13,6 @@ class CreateTestTable extends Migration
      */
     public function up()
     {
-        // DB::statement("CREATE TABLE test (
-        //     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-        //     name varchar(255)
-        //   )");
         Schema::create('test', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -31,6 +26,6 @@ class CreateTestTable extends Migration
      */
     public function down()
     {
-        DB::statement("drop table test");
+        Schema::dropIfExists('test');
     }
 }
